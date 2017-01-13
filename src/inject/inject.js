@@ -1,4 +1,3 @@
-
 const GITHUB_HEADERS = {
   'Authorization': 'Basic ' + btoa(GITHUB_USER + ':' + GITHUB_PASS),
   'Content-Type': 'application/json',
@@ -7,58 +6,74 @@ const GITHUB_HEADERS = {
 
 const commands = [
 
-  {
-    name: 'Assign To Me',
-    action: cardContext => fetch(cardContext.issueApiUrl + '/assignees', {
-      method: 'POST',
-      headers: GITHUB_HEADERS,
-      body: JSON.stringify({
-        assignees: [GITHUB_USER]
+    {
+      name: 'Assign To Me',
+      action: cardContext => fetch(cardContext.issueApiUrl + '/assignees', {
+        method: 'POST',
+        headers: GITHUB_HEADERS,
+        body: JSON.stringify({
+          assignees: [GITHUB_USER]
+        })
       })
-    })
-  },
+    },
 
-  {
-    name: 'Clear Assignees',
-    action: cardContext => fetch(cardContext.issueApiUrl + '/assignees', {
-      method: 'DELETE',
-      headers: GITHUB_HEADERS,
-      body: JSON.stringify({
-        assignees: [GITHUB_USER]
+    {
+      name: 'Clear Assignees',
+      action: cardContext => fetch(cardContext.issueApiUrl + '/assignees', {
+        method: 'DELETE',
+        headers: GITHUB_HEADERS,
+        body: JSON.stringify({
+          assignees: [GITHUB_USER]
+        })
       })
-    })
-  },
+    },
 
-  {
-    name: 'Finish Card',
-    action: actionFinishCard
-  },
+    'LINE_BREAK',
 
-  'LINE_BREAK',
-
-  {
-    name: 'Make Bug',
-    action: cardContext => fetch(cardContext.issueApiUrl, {
-      method: 'PATCH',
-      headers: GITHUB_HEADERS,
-      body: JSON.stringify({
-        labels: ['bug']
+    {
+      name: 'Start Card',
+      action: cardContext => fetch(cardContext.cardApiUrl + '/moves', {
+        method: 'POST',
+        headers: GITHUB_HEADERS,
+        body: JSON.stringify({
+          position: 'top',
+          column_id: GITHUB_IN_PROGRESS_COLUMN
+        })
       })
-    })
-  },
+    },
 
-  {
-    name: 'Make Enhancement',
-    action: cardContext => fetch(cardContext.issueApiUrl, {
-      method: 'PATCH',
-      headers: GITHUB_HEADERS,
-      body: JSON.stringify({
-        labels: ['enhancement']
+    {
+      name: 'Finish Card',
+      action: actionFinishCard
+    }
+    ,
+
+    'LINE_BREAK',
+
+    {
+      name: 'Make Bug',
+      action: cardContext => fetch(cardContext.issueApiUrl, {
+        method: 'PATCH',
+        headers: GITHUB_HEADERS,
+        body: JSON.stringify({
+          labels: ['bug']
+        })
       })
-    })
-  }
+    },
 
-];
+    {
+      name: 'Make Enhancement',
+      action: cardContext => fetch(cardContext.issueApiUrl, {
+        method: 'PATCH',
+        headers: GITHUB_HEADERS,
+        body: JSON.stringify({
+          labels: ['enhancement']
+        })
+      })
+    }
+
+  ]
+  ;
 
 function getCardContext(e) {
   const cardParent = e.target.closest('[data-card-id]');

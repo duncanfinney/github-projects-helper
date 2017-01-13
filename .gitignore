@@ -104,3 +104,4 @@ pom.xml.asc
 # End of https://www.gitignore.io/api/osx,macos,webstorm,leiningen
 
 settings.js
+.idea/
