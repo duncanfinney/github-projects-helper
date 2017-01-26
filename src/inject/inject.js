@@ -106,9 +106,14 @@ function doCardAction(e) {
     );
 }
 
-function addButtons() {
+function addButtons(onlyModified) {
+
+  const dropdownSelector = onlyModified ? '.dropdown-menu:not(.is-modified)' : '.dropdown-menu';
+
   //for each dropdown menu
-  document.querySelectorAll('.dropdown-menu').forEach(m => {
+  document.querySelectorAll(dropdownSelector).forEach(m => {
+
+    m.classList.add('is-modified');
 
     //add each command
     commands.forEach(cmd => {
@@ -139,6 +144,5 @@ function removeButtons() {
 }
 
 setInterval(() => {
-  removeButtons()
-  addButtons()
+  addButtons(true)
 }, 2000);
